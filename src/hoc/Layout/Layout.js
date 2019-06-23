@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import Auxiliary from '../Auxiliary/Auxiliary';
 import classes from './Layout.module.css';
 import Toolbar from '../../components/Navigation/Toolbar/Toolbar';
@@ -6,39 +6,31 @@ import SideDrawer from '../../components/Navigation/SideDrawer/SideDrawer';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-class Layout extends Component {
-    state = {
-        showSideDrawer: false
+const layout = props => {
+    const [sideDrawerIsVisible, setsideDrawerIsVisible] = useState(false);
+
+    const sideDrawerCloseHandler = () => {
+        setsideDrawerIsVisible(false);
     }
 
-    sideDrawerCloseHandler = () => {
-        this.setState({ showSideDrawer: false });
-
-    }
-
-    sideDrawerToggleHandler = () => {
-        this.setState((prevState) => {
-            return { showSideDrawer: !prevState.showSideDrawer };
-        })
+    const sideDrawerToggleHandler = () => {
+        setsideDrawerIsVisible(!sideDrawerIsVisible);
     };
 
-
-    render() {
-        return (
-            <Auxiliary>
-                <Toolbar 
-                    isAuth={this.props.isAuthenticated}
-                    showSideDrawer={this.sideDrawerToggleHandler} />
-                <SideDrawer
-                    isAuth={this.props.isAuthenticated}
-                    open={this.state.showSideDrawer}
-                    closed={this.sideDrawerCloseHandler} />
-                <main className={classes.Content}>
-                    {this.props.children}
-                </main>
-            </Auxiliary>
-        );
-    };
+    return (
+        <Auxiliary>
+            <Toolbar
+                isAuth={props.isAuthenticated}
+                showSideDrawer={sideDrawerToggleHandler} />
+            <SideDrawer
+                isAuth={props.isAuthenticated}
+                open={sideDrawerIsVisible}
+                closed={sideDrawerCloseHandler} />
+            <main className={classes.Content}>
+                {props.children}
+            </main>
+        </Auxiliary>
+    );
 };
 
 const mapStateToProps = state => {
@@ -47,4 +39,4 @@ const mapStateToProps = state => {
     };
 }
 
-export default withRouter(connect (mapStateToProps) (Layout));
+export default withRouter(connect(mapStateToProps)(layout));
