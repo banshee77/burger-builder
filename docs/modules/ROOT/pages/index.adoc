@@ -11,6 +11,7 @@
 :uri-deployment: https://facebook.github.io/create-react-app/docs/deployment/
 
 {project-name} project was bootstrapped with {uri-create-react-app}[Create React App].
+
 Source code is available {uri-project}[github].  
 
 ## Available Scripts
